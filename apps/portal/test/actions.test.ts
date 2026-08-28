@@ -4,7 +4,12 @@ import { vi, type MockInstance } from 'vitest';
 vi.mock('@simplewebauthn/browser', () => ({
   browserSupportsWebAuthnAutofill: vi.fn(() => Promise.resolve(true)),
   startAuthentication: vi.fn(() => Promise.resolve({ id: 'credential' })),
+  WebAuthnAbortService: {
+    cancelCeremony: vi.fn(),
+  },
 }));
+
+import { WebAuthnAbortService } from '@simplewebauthn/browser';
 
 describe('closePopup action', () => {
   test('clears a one-shot redirect from pageData so it cannot leak into a later sign-in', async () => {
@@ -91,6 +96,7 @@ describe('passkeySignin action', () => {
       page: 'accountHome',
       reloadOnPopupClose: true,
     });
+    expect(WebAuthnAbortService.cancelCeremony).toHaveBeenCalledOnce();
   });
 });
 

@@ -14,7 +14,11 @@ import {
   getRefDomain,
 } from './utils/helpers';
 import { t } from './utils/i18n';
-import { browserSupportsWebAuthnAutofill, startAuthentication } from '@simplewebauthn/browser';
+import {
+  browserSupportsWebAuthnAutofill,
+  startAuthentication,
+  WebAuthnAbortService,
+} from '@simplewebauthn/browser';
 
 const CANNOT_CHECKOUT_WITH_EXISTING_SUBSCRIPTION = 'CANNOT_CHECKOUT_WITH_EXISTING_SUBSCRIPTION';
 
@@ -160,6 +164,7 @@ async function signin({ data, api, state }) {
 
 async function passkeySignin({ api, state }) {
   try {
+    WebAuthnAbortService.cancelCeremony();
     const beginIntegrityToken = await api.member.getIntegrityToken();
     const { options, ceremony } = await api.member.beginPasskeyAuthentication({
       integrityToken: beginIntegrityToken,

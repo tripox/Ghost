@@ -823,7 +823,9 @@ export default class App extends React.Component {
         return {};
       }
 
-      const lastPage = ['accountPlan', 'accountProfile'].includes(page) ? 'accountHome' : null;
+      const lastPage = ['accountPlan', 'accountProfile', 'accountPasskeys'].includes(page)
+        ? 'accountHome'
+        : null;
       const showPopup =
         ['monthly', 'yearly'].includes(pageQuery) ||
         productMonthlyPriceQueryRegex.test(pageQuery) ||
@@ -1222,6 +1224,10 @@ export default class App extends React.Component {
     } else if (path === 'account/profile') {
       return {
         page: 'accountProfile',
+      };
+    } else if (path === 'account/passkeys') {
+      return {
+        page: 'accountPasskeys',
       };
     } else if (path === 'account/newsletters') {
       return {

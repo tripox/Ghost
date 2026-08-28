@@ -1,6 +1,11 @@
 import ActionHandler from '../src/actions';
 import { vi, type MockInstance } from 'vitest';
 
+vi.mock('@simplewebauthn/browser', () => ({
+  browserSupportsWebAuthnAutofill: vi.fn(() => Promise.resolve(true)),
+  startAuthentication: vi.fn(() => Promise.resolve({ id: 'credential' })),
+}));
+
 describe('closePopup action', () => {
   test('clears a one-shot redirect from pageData so it cannot leak into a later sign-in', async () => {
     const result = await ActionHandler({
@@ -53,6 +58,72 @@ describe('updateProfile action', () => {
     });
 
     expect(mockApi.member.update).toHaveBeenCalledWith({ name: 'John Doe' });
+  });
+});
+
+describe('passkeySignin action', () => {
+  test('refreshes the host page when Portal closes after sign in', async () => {
+    const member = { id: 'member-id', email: 'member@example.com' };
+    const mockApi = {
+      member: {
+        getIntegrityToken: vi
+          .fn()
+          .mockResolvedValueOnce('begin-integrity-token')
+          .mockResolvedValueOnce('finish-integrity-token'),
+        beginPasskeyAuthentication: vi.fn(() =>
+          Promise.resolve({ options: {}, ceremony: 'ceremony-token' }),
+        ),
+        finishPasskeyAuthentication: vi.fn(() => Promise.resolve()),
+        sessionData: vi.fn(() => Promise.resolve(member)),
+      },
+    };
+
+    const result = await ActionHandler({
+      action: 'passkeySignin',
+      data: {},
+      state: {},
+      api: mockApi,
+    });
+
+    expect(result).toMatchObject({
+      action: 'passkeySignin:success',
+      member,
+      page: 'accountHome',
+      reloadOnPopupClose: true,
+    });
+  });
+});
+
+describe('conditionalPasskeySignin action', () => {
+  test('signs the member in through browser autofill', async () => {
+    const member = { id: 'member-id', email: 'member@example.com' };
+    const mockApi = {
+      member: {
+        getIntegrityToken: vi
+          .fn()
+          .mockResolvedValueOnce('begin-integrity-token')
+          .mockResolvedValueOnce('finish-integrity-token'),
+        beginPasskeyAuthentication: vi.fn(() =>
+          Promise.resolve({ options: {}, ceremony: 'ceremony-token' }),
+        ),
+        finishPasskeyAuthentication: vi.fn(() => Promise.resolve()),
+        sessionData: vi.fn(() => Promise.resolve(member)),
+      },
+    };
+
+    const result = await ActionHandler({
+      action: 'conditionalPasskeySignin',
+      data: {},
+      state: {},
+      api: mockApi,
+    });
+
+    expect(result).toMatchObject({
+      action: 'conditionalPasskeySignin:success',
+      member,
+      page: 'accountHome',
+      reloadOnPopupClose: true,
+    });
   });
 });
 

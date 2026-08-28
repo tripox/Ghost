@@ -3,6 +3,8 @@ const errors = require('@tryghost/errors');
 const models = require('../../models');
 const auth = require('../../services/auth');
 const api = require('./index');
+const passkeys = require('../../services/passkeys');
+const urlUtils = require('../../../shared/url-utils').default;
 
 const messages = {
   accessDenied: 'Access Denied.',
@@ -84,6 +86,143 @@ const controller = {
   verify() {
     return Promise.resolve(function verifyAuthCodeMw(req, res, next) {
       auth.session.verifyAuthCode(req, res, next);
+    });
+  },
+  passkeys() {
+    return Promise.resolve(async function listPasskeysMw(req, res, next) {
+      try {
+        const origin = new URL(urlUtils.getAdminUrl() || urlUtils.getSiteUrl()).origin;
+        const credentials = await passkeys.list({
+          userId: req.user.id,
+          rpID: new URL(origin).hostname,
+        });
+        res.json({ passkeys: credentials });
+      } catch (error) {
+        next(error);
+      }
+    });
+  },
+  beginPasskeyRegistration() {
+    return Promise.resolve(async function beginPasskeyRegistrationMw(req, res, next) {
+      try {
+        const origin = new URL(urlUtils.getAdminUrl() || urlUtils.getSiteUrl()).origin;
+        const { options } = await passkeys.registrationOptions({
+          userId: req.user.id,
+          email: req.user.get('email'),
+          name: req.user.get('name'),
+          origin,
+        });
+        req.session.passkey_registration_challenge = options.challenge;
+        res.json(options);
+      } catch (error) {
+        next(error);
+      }
+    });
+  },
+  finishPasskeyRegistration() {
+    return Promise.resolve(async function finishPasskeyRegistrationMw(req, res, next) {
+      try {
+        const expectedChallenge = req.session.passkey_registration_challenge;
+        req.session.passkey_registration_challenge = undefined;
+        if (!expectedChallenge) {
+          throw new errors.BadRequestError({ message: 'Passkey registration challenge expired.' });
+        }
+        const origin = new URL(urlUtils.getAdminUrl() || urlUtils.getSiteUrl()).origin;
+        const credential = await passkeys.register({
+          userId: req.user.id,
+          origin,
+          expectedChallenge,
+          response: req.body.response,
+          name: req.body.name,
+        });
+        if (!credential) {
+          throw new errors.BadRequestError({ message: 'Passkey registration failed.' });
+        }
+        res.status(201).json({ passkeys: [credential] });
+      } catch (error) {
+        next(error);
+      }
+    });
+  },
+  removePasskey() {
+    return Promise.resolve(async function removePasskeyMw(req, res, next) {
+      try {
+        const origin = new URL(urlUtils.getAdminUrl() || urlUtils.getSiteUrl()).origin;
+        const removed = await passkeys.remove({
+          id: req.params.id,
+          userId: req.user.id,
+          rpID: new URL(origin).hostname,
+        });
+        if (!removed) {
+          throw new errors.NotFoundError({ message: 'Passkey not found.' });
+        }
+        res.sendStatus(204);
+      } catch (error) {
+        next(error);
+      }
+    });
+  },
+  beginPasskeyAuthentication() {
+    return Promise.resolve(async function beginPasskeyAuthenticationMw(req, res, next) {
+      try {
+        const user = await auth.session.sessionService.getUserForSession(req, res);
+        const origin = new URL(urlUtils.getAdminUrl() || urlUtils.getSiteUrl()).origin;
+        const { options } = await passkeys.authenticationOptions({ userId: user?.id, origin });
+        const ceremony = passkeys.createCeremonyToken({
+          challenge: options.challenge,
+          purpose: 'staff-authentication',
+          subjectId: user?.id,
+        });
+        res.json({ ...options, ceremony });
+      } catch (error) {
+        next(error);
+      }
+    });
+  },
+  finishPasskeyAuthentication() {
+    return Promise.resolve(async function finishPasskeyAuthenticationMw(req, res, next) {
+      try {
+        const user = await auth.session.sessionService.getUserForSession(req, res);
+        const ceremony = passkeys.verifyCeremonyToken(req.body.ceremony, {
+          purpose: 'staff-authentication',
+          subjectId: user?.id,
+        });
+        if (!ceremony) {
+          throw new errors.UnauthorizedError({
+            message: 'Passkey authentication challenge expired.',
+          });
+        }
+        const origin = new URL(urlUtils.getAdminUrl() || urlUtils.getSiteUrl()).origin;
+        const result = await passkeys.authenticate({
+          origin,
+          expectedChallenge: ceremony.challenge,
+          response: req.body.response,
+          audience: 'staff',
+          ceremonyIssuedAt: ceremony.issued,
+        });
+        if (
+          !result ||
+          (user && result.userId !== user.id) ||
+          (ceremony.subjectId && result.userId !== ceremony.subjectId)
+        ) {
+          throw new errors.UnauthorizedError({ message: 'Passkey authentication failed.' });
+        }
+
+        if (user) {
+          await auth.session.sessionService.verifySession(req, res);
+          res.sendStatus(200);
+          return;
+        }
+
+        const passkeyUser = await models.User.findOne({ id: result.userId, status: 'all' });
+        if (!passkeyUser || !passkeyUser.isActive()) {
+          throw new errors.UnauthorizedError({ message: 'Passkey authentication failed.' });
+        }
+        await auth.session.sessionService.createVerifiedSessionForUser(req, res, passkeyUser);
+        res.sendStatus(201);
+      } catch (error) {
+        next(error);
+      }
     });
   },
 };

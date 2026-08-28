@@ -30,6 +30,7 @@
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {
+    "@simplewebauthn/browser": "catalog:",
     "@tryghost/debug": "catalog:"
   },
   "devDependencies": {

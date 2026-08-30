@@ -199,7 +199,9 @@ module.exports = function (defaults) {
                 plugins: postcssCompilePlugins
             }
         },
-        sourcemaps: {enabled: true},
+        // Production Admin packages exclude map files, so retaining source map
+        // references would make browsers request files that cannot be served.
+        sourcemaps: {enabled: !isProduction},
         svgJar: {
             strategy: 'inline',
             stripPath: false,
@@ -225,7 +227,7 @@ module.exports = function (defaults) {
         autoImport: {
             publicAssetURL,
             webpack: {
-                devtool: isProduction ? 'source-map' : 'eval-cheap-module-source-map',
+                devtool: isProduction ? false : 'eval-cheap-module-source-map',
                 resolve: {
                     fallback: {
                         util: require.resolve('util'),

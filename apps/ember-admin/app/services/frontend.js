@@ -16,6 +16,10 @@ export default class FrontendService extends Service {
         return this._lastPassword !== this.settings.password;
     }
 
+    get isSameOrigin() {
+        return new URL(this.config.blogUrl).origin === window.location.origin;
+    }
+
     getUrl(path) {
         const siteUrl = new URL(this.config.blogUrl);
         const subdir = siteUrl.pathname.endsWith('/') ? siteUrl.pathname : `${siteUrl.pathname}/`;
@@ -29,6 +33,14 @@ export default class FrontendService extends Service {
             const privateLoginUrl = this.getUrl('/private/?r=%2F');
             this._lastPassword = this.settings.password;
 
+            // Browsers cannot set the frontend's private-site cookie from a
+            // cross-origin Admin request. Avoid a request that is guaranteed
+            // to fail CORS and let the frontend handle its own authentication.
+            if (!this.isSameOrigin) {
+                this._hasLoggedIn = true;
+                return;
+            }
+
             return fetch(privateLoginUrl, {
                 method: 'POST',
                 mode: 'cors',
@@ -40,11 +52,9 @@ export default class FrontendService extends Service {
                 body: `password=${this._lastPassword}`
             }).then(() => {
                 this._hasLoggedIn = true;
-            }).catch((e) => {
-                // Safari will error when x-site tracking is prevented and frontend/admin are separate
-                // we don't want to break anything else in that case so make it look like it succeeded
-                console.error(e); // eslint-disable-line
-                return true;
+            }).catch(() => {
+                // Private-site login is best-effort and should not block Admin.
+                this._hasLoggedIn = true;
             });
         }
     }

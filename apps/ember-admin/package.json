@@ -171,6 +171,7 @@
     "*.js": "eslint"
   },
   "dependencies": {
+    "@simplewebauthn/browser": "catalog:",
     "dompurify": "catalog:",
     "lodash": "catalog:",
     "path-browserify": "1.0.1",

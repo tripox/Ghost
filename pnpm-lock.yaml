@@ -689,6 +689,12 @@ catalogs:
     zod:
       specifier: 4.4.3
       version: 4.4.3
+    '@simplewebauthn/browser':
+      specifier: 13.3.0
+      version: 13.3.0
+    '@simplewebauthn/server':
+      specifier: 13.3.2
+      version: 13.3.2
   react17:
     '@testing-library/react':
       specifier: 12.1.5
@@ -1098,6 +1104,9 @@ importers:
       zod:
         specifier: 'catalog:'
         version: 4.4.3
+      '@simplewebauthn/browser':
+        specifier: 'catalog:'
+        version: 13.3.0
     devDependencies:
       '@internal/cfg-eslint':
         specifier: workspace:*
@@ -1490,6 +1499,9 @@ importers:
       webpack:
         specifier: 5.105.4
         version: 5.105.4(@swc/core@1.15.43(@swc/helpers@0.5.23))(clean-css@4.2.4)(cssnano@4.1.10)(csso@5.0.5)(esbuild@0.28.2)(lightningcss@1.32.0)(postcss@8.5.26)(uglify-js@3.19.3)
+      '@simplewebauthn/browser':
+        specifier: 'catalog:'
+        version: 13.3.0
     devDependencies:
       '@babel/core':
         specifier: 7.29.7
@@ -1878,6 +1890,12 @@ importers:
       '@tryghost/debug':
         specifier: 'catalog:'
         version: 2.3.14(supports-color@10.2.2)
+      '@simplewebauthn/browser':
+        specifier: 'catalog:'
+        version: 13.3.0
+      zod:
+        specifier: 'catalog:'
+        version: 4.4.3
     devDependencies:
       '@doist/react-interpolate':
         specifier: 2.2.4
@@ -2949,6 +2967,9 @@ importers:
       zod:
         specifier: 'catalog:'
         version: 4.4.3
+      '@simplewebauthn/server':
+        specifier: 'catalog:'
+        version: 13.3.2
     devDependencies:
       '@eslint/js':
         specifier: 'catalog:'
@@ -22980,6 +23001,104 @@ packages:
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
+  '@simplewebauthn/server@13.3.2':
+    resolution:
+      integrity: sha512-KEDhfcGP1PAKRVSDjA3npTQFqS2b/srm+ipoNBNHdkzrHAlaRQUTE+a5f4ywsx6thxAw1NU2rYcLEY1949RGbQ==
+    engines:
+      node: '>=20.0.0'
+  '@peculiar/x509@1.14.3':
+    resolution:
+      integrity: sha512-C2Xj8FZ0uHWeCXXqX5B4/gVFQmtSkiuOolzAgutjTfseNOHT3pUjljDZsTSxXFGgio54bCzVFqmEOUrIVk8RDA==
+    engines:
+      node: '>=20.0.0'
+  tsyringe@4.10.0:
+    resolution:
+      integrity: sha512-axr3IdNuVIxnaK5XGEUFTu3YmAQ6lllgrvqfEoR16g/HGnYY/6We4oWENtAnzK6/LpJ2ur9PAb80RBt7/U4ugw==
+    engines:
+      node: '>= 6.0.0'
+  reflect-metadata@0.2.2:
+    resolution:
+      integrity: sha512-urBwgfrvVP/eAyXx4hluJivBKzuEbSQs9rKWCrCkbSxNv8mxPcUZKeuoF3Uy4mJl3Lwprp6yy5/39VWigZ4K6Q==
+  pvtsutils@1.3.6:
+    resolution:
+      integrity: sha512-PLgQXQ6H2FWCaeRak8vvk1GW462lMxB5s3Jm673N82zI4vqtVUPuZdffdZbPDFRoU8kAhItWFtPCWiPpp4/EDg==
+  '@peculiar/asn1-x509@2.9.5':
+    resolution:
+      integrity: sha512-NP3ecvN6zTDlwCvogIWL7MJN9AZNuskkIbnlhrlkB97Mn2EqirBUQ8GKzsOmdAL3pRvjGu1Uk/a4DNfiZrWxhw==
+    engines:
+      node: '>=14'
+  asn1js@3.0.10:
+    resolution:
+      integrity: sha512-S2s3aOytiKdFRdulw2qPE51MzjzVOisppcVv7jVFR+Kw0kxwvFrDcYA0h7Ndqbmj0HkMIXYWaoj7fli8kgx1eg==
+    engines:
+      node: '>=12.0.0'
+  pvutils@1.2.0:
+    resolution:
+      integrity: sha512-BbubeCEyTuQjVMakvJQ/Sxbc93F2pwmbsxONT/ZRrwU7Ua38d8unYTwXpTVLAKJ4BDuH9IGztCjQcd/N/39Dvg==
+    engines:
+      node: '>=16.0.0'
+  '@peculiar/utils@2.0.3':
+    resolution:
+      integrity: sha512-+oL3HPFRIZ1St2K50lWCXiioIgSoxzz7R1J3uF6neO2yl1sgmpgY6XXJH4BdpoDkMWznQTeYF6oWNDZLCdQ4eQ==
+  '@peculiar/asn1-schema@2.9.5':
+    resolution:
+      integrity: sha512-Ez3wLKVjaxdsLcgeWN4OE31QkM7oBOgKuuBJxldRYAkfYw2C+8zJPcSd/SThnbhszsEOlAmoaS5kIIkN29fGKQ==
+    engines:
+      node: '>=14'
+  '@peculiar/asn1-rsa@2.9.5':
+    resolution:
+      integrity: sha512-kHwBLVMkm9ljlM521ovS7y4z4mr8xuHTdNyyoPlDvckBwFKSgs9HqKBryLBeqHqL2YpIgl+Vspl7kzNGG2phzA==
+    engines:
+      node: '>=14'
+  '@peculiar/asn1-pkcs9@2.9.5':
+    resolution:
+      integrity: sha512-4R/zMgLSHbQIZRBwP1KzX6iuNHmW3xFWwu9TS9A00N60fmQqp9DkkqnQFyd0mAYMQTrQefuzQ/yP4U8sOLGUgQ==
+    engines:
+      node: '>=14'
+  '@peculiar/asn1-x509-attr@2.9.5':
+    resolution:
+      integrity: sha512-PlbL1a74RZiry7puPCZ5hdk/puvivxYJPbjadr2i7DBjHCJFEKCfTRPKL3DILeZFtzJjn95J5EBtSc4/TB9/6Q==
+    engines:
+      node: '>=14'
+  '@peculiar/asn1-pkcs8@2.9.5':
+    resolution:
+      integrity: sha512-c7UghAGQdBfAHL9JdwcJkAc/lDJKNXfCdYXPXlf8BZdD/fVJjJnXKHxX4gyLhkFTvnGhME7caieSgc2ROtqYTQ==
+    engines:
+      node: '>=14'
+  '@peculiar/asn1-pfx@2.9.5':
+    resolution:
+      integrity: sha512-btcH7lbcD4410qnjHvv7F0kEuMNKbX8CFAZSs9CDPWHKzT1byLPHYeR40AnUw9z4CzsijMY0daBFYUvVx75sdA==
+    engines:
+      node: '>=14'
+  '@peculiar/asn1-cms@2.9.5':
+    resolution:
+      integrity: sha512-4Ivz0fsyFofe0bslNsYcGN9+iETdHX4v+BFwIPr+K/BAt61sHXECP63ff9FntU9zcfVQELJFdUG9so44OjUlBQ==
+    engines:
+      node: '>=14'
+  '@peculiar/asn1-ecc@2.9.5':
+    resolution:
+      integrity: sha512-OD+HLlcV7wCL64w0rheX/C0J31DbJce0nf8ulv3UNftQ617JEZE3sQ4cMN6PotXWlJ1M5GQx90G3bywtdKOstw==
+    engines:
+      node: '>=14'
+  '@peculiar/asn1-csr@2.9.5':
+    resolution:
+      integrity: sha512-9dO6PcoJeI+1xJ4rG7eINMa6f9Ix/QdRs5UGZ0D7v/R3TzmsbVr5cqAgfYw4xgS9U54ouHYqEz0bIZBbM/UY1g==
+    engines:
+      node: '>=14'
+  '@peculiar/asn1-android@2.9.5':
+    resolution:
+      integrity: sha512-KnNE4l033gbJ3ZzfYk7fJpSZwhd5xT+dPAnrB8bcwqylHiLN2zjZ0OyFao0LDIOI/ZdXRabV0n3Ww/KvpgZq6w==
+    engines:
+      node: '>=14'
+  '@levischuck/tiny-cbor@0.2.11':
+    resolution:
+      integrity: sha512-llBRm4dT4Z89aRsm6u2oEZ8tfwL/2l6BwpZ7JcyieouniDECM5AqNgr/y08zalEIvW3RSK4upYyybDcmjXqAow==
+  '@hexagon/base64@1.1.28':
+    resolution:
+      integrity: sha512-lhqDEAvWixy3bZ+UOYbPwUbBkwBq5C1LAJ/xPC8Oi+lL54oyakv/npbA0aU2hgCsx/1NUd4IBvV03+aUBWxerw==
+  '@simplewebauthn/browser@13.3.0':
+    resolution:
+      integrity: sha512-BE/UWv6FOToAdVk0EokzkqQQDOWtNydYlY6+OrmiZ5SCNmb41VehttboTetUM3T/fr6EAFYVXjz4My2wg230rQ==
 
 snapshots:
 
@@ -47370,3 +47489,116 @@ snapshots:
       react: 18.3.1
 
   zwitch@2.0.4: {}
+  '@simplewebauthn/server@13.3.2':
+    dependencies:
+      '@hexagon/base64': 1.1.28
+      '@levischuck/tiny-cbor': 0.2.11
+      '@peculiar/asn1-android': 2.9.5
+      '@peculiar/asn1-ecc': 2.9.5
+      '@peculiar/asn1-rsa': 2.9.5
+      '@peculiar/asn1-schema': 2.9.5
+      '@peculiar/asn1-x509': 2.9.5
+      '@peculiar/x509': 1.14.3
+  '@peculiar/x509@1.14.3':
+    dependencies:
+      '@peculiar/asn1-cms': 2.9.5
+      '@peculiar/asn1-csr': 2.9.5
+      '@peculiar/asn1-ecc': 2.9.5
+      '@peculiar/asn1-pkcs9': 2.9.5
+      '@peculiar/asn1-rsa': 2.9.5
+      '@peculiar/asn1-schema': 2.9.5
+      '@peculiar/asn1-x509': 2.9.5
+      pvtsutils: 1.3.6
+      reflect-metadata: 0.2.2
+      tslib: 2.8.1
+      tsyringe: 4.10.0
+  tsyringe@4.10.0:
+    dependencies:
+      tslib: 1.14.1
+  reflect-metadata@0.2.2: {}
+  pvtsutils@1.3.6:
+    dependencies:
+      tslib: 2.8.1
+  '@peculiar/asn1-x509@2.9.5':
+    dependencies:
+      '@peculiar/asn1-schema': 2.9.5
+      '@peculiar/utils': 2.0.3
+      asn1js: 3.0.10
+      tslib: 2.8.1
+  asn1js@3.0.10:
+    dependencies:
+      pvtsutils: 1.3.6
+      pvutils: 1.2.0
+      tslib: 2.8.1
+  pvutils@1.2.0: {}
+  '@peculiar/utils@2.0.3':
+    dependencies:
+      tslib: 2.8.1
+  '@peculiar/asn1-schema@2.9.5':
+    dependencies:
+      '@peculiar/utils': 2.0.3
+      asn1js: 3.0.10
+      tslib: 2.8.1
+  '@peculiar/asn1-rsa@2.9.5':
+    dependencies:
+      '@peculiar/asn1-schema': 2.9.5
+      '@peculiar/asn1-x509': 2.9.5
+      asn1js: 3.0.10
+      tslib: 2.8.1
+  '@peculiar/asn1-pkcs9@2.9.5':
+    dependencies:
+      '@peculiar/asn1-cms': 2.9.5
+      '@peculiar/asn1-pfx': 2.9.5
+      '@peculiar/asn1-pkcs8': 2.9.5
+      '@peculiar/asn1-schema': 2.9.5
+      '@peculiar/asn1-x509': 2.9.5
+      '@peculiar/asn1-x509-attr': 2.9.5
+      asn1js: 3.0.10
+      tslib: 2.8.1
+  '@peculiar/asn1-x509-attr@2.9.5':
+    dependencies:
+      '@peculiar/asn1-schema': 2.9.5
+      '@peculiar/asn1-x509': 2.9.5
+      asn1js: 3.0.10
+      tslib: 2.8.1
+  '@peculiar/asn1-pkcs8@2.9.5':
+    dependencies:
+      '@peculiar/asn1-schema': 2.9.5
+      '@peculiar/asn1-x509': 2.9.5
+      asn1js: 3.0.10
+      tslib: 2.8.1
+  '@peculiar/asn1-pfx@2.9.5':
+    dependencies:
+      '@peculiar/asn1-cms': 2.9.5
+      '@peculiar/asn1-pkcs8': 2.9.5
+      '@peculiar/asn1-rsa': 2.9.5
+      '@peculiar/asn1-schema': 2.9.5
+      asn1js: 3.0.10
+      tslib: 2.8.1
+  '@peculiar/asn1-cms@2.9.5':
+    dependencies:
+      '@peculiar/asn1-schema': 2.9.5
+      '@peculiar/asn1-x509': 2.9.5
+      '@peculiar/asn1-x509-attr': 2.9.5
+      asn1js: 3.0.10
+      tslib: 2.8.1
+  '@peculiar/asn1-ecc@2.9.5':
+    dependencies:
+      '@peculiar/asn1-schema': 2.9.5
+      '@peculiar/asn1-x509': 2.9.5
+      asn1js: 3.0.10
+      tslib: 2.8.1
+  '@peculiar/asn1-csr@2.9.5':
+    dependencies:
+      '@peculiar/asn1-schema': 2.9.5
+      '@peculiar/asn1-x509': 2.9.5
+      asn1js: 3.0.10
+      tslib: 2.8.1
+  '@peculiar/asn1-android@2.9.5':
+    dependencies:
+      '@peculiar/asn1-schema': 2.9.5
+      asn1js: 3.0.10
+      tslib: 2.8.1
+  '@levischuck/tiny-cbor@0.2.11': {}
+  '@hexagon/base64@1.1.28': {}
+  '@simplewebauthn/browser@13.3.0': {}

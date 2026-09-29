@@ -194,6 +194,7 @@ function InputField({
   tabIndex,
   maxLength,
   autoFocus,
+  autoComplete: requestedAutoComplete,
   errorMessage,
   // Marked wrong without saying why here. A composite's inputs share one field, and its
   // reasons are listed under the group rather than wedged between its rows.
@@ -216,14 +217,14 @@ function InputField({
     disabled = true;
   }
 
-  let autoComplete = '';
+  let autoComplete = requestedAutoComplete || '';
   let autoCorrect = '';
   let autoCapitalize = '';
   let inputMode;
   let pattern;
   switch (id) {
     case 'input-email':
-      autoComplete = 'off';
+      autoComplete ||= 'off';
       autoCorrect = 'off';
       autoCapitalize = 'off';
       break;

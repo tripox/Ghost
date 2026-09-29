@@ -28,8 +28,8 @@ export class HumanReadableError extends Error {
    * @returns {HumanReadableError|undefined}
    */
   static async fromApiResponse(res) {
-    // Bad request + Unprocessable + Too many requests
-    if (res.status === 400 || res.status === 422 || res.status === 429) {
+    // Bad request, conflict, unprocessable entity, or too many requests
+    if ([400, 409, 422, 429].includes(res.status)) {
       try {
         return fromErrorsJSON(await res.json());
       } catch (e) {

@@ -27,6 +27,7 @@ const FormInput = ({ field, onChange, onBlur = () => {}, onKeyDown = () => {} })
         invalid={field.invalid}
         describedBy={field.describedBy}
         autoFocus={field.autoFocus}
+        autoComplete={field.autoComplete}
       />
     </>
   );

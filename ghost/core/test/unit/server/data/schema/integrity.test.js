@@ -5,6 +5,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const { config } = require('../../../../utils/config-utils');
 const schema = require('../../../../../core/server/data/schema/schema');
+const inDevelopment = require('../../../../../core/server/data/schema/in-development');
 const fixtures = require('../../../../../core/server/data/schema/fixtures/fixtures.json');
 const defaultSettings = require('../../../../../core/server/data/schema/default-settings/default-settings.json');
 
@@ -37,9 +38,9 @@ const parseYaml = require('../../../../../core/server/services/route-settings/ya
  */
 describe('DB version integrity', function () {
   // Only these variables should need updating
-  const currentSchemaHash = '6242ee4ed898801288242c8b84498ec4';
+  const currentSchemaHash = '33cd48363b7fac8887912dcbd91985be';
   const currentFixturesHash = '5718e0d4eb037f159c312369e949829a';
-  const currentSettingsHash = '6ea42a00cca61a1ba87f66eb6e25a78a';
+  const currentSettingsHash = 'ad77752f31c6a7f174c04c499214b975';
   const currentRoutesHash = 'd8c25fa01bf6d22a2bcb05ba0de70dc1';
 
   // If this test is failing, then it is likely a change has been made that requires a DB version bump,
@@ -55,7 +56,7 @@ describe('DB version integrity', function () {
       'yamlSource',
     );
 
-    const tablesNoValidation = _.cloneDeep(schema);
+    const tablesNoValidation = _.cloneDeep(_.omit(schema, inDevelopment.IN_DEVELOPMENT_TABLES));
 
     _.each(tablesNoValidation, function (table) {
       return _.each(table, function (column, name) {
